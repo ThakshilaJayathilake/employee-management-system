@@ -1,20 +1,25 @@
 package com.example.employeems.service;
-
 import com.example.employeems.dto.EmployeeDTO;
+import com.example.employeems.entity.Employee;
 import com.example.employeems.repo.EmployeeRepo;
+import com.example.employeems.util.VarList;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 @Service
 public class EmployeeService {
     @Autowired
     private EmployeeRepo employeeRepo;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public String saveEmployee(EmployeeDTO employeeDTO){
         if(employeeRepo.existsById(employeeDTO.getEmpID())){
-            return "yes";
+            return VarList.RSP_DUPLICATED;
         }else {
-            return  "no";
+            employeeRepo.save(modelMapper.map(employeeDTO, Employee.class));
+            return VarList.RSP_SUCCESS;
         }
     }
 }
