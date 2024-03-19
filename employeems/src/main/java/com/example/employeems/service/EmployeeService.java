@@ -4,6 +4,7 @@ import com.example.employeems.entity.Employee;
 import com.example.employeems.repo.EmployeeRepo;
 import com.example.employeems.util.VarList;
 import jakarta.transaction.Transactional;
+import org.aspectj.weaver.ast.Var;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,15 @@ public class EmployeeService {
             return modelMapper.map(employee, EmployeeDTO.class);
         }else {
             return null;
+        }
+    }
+
+    public String deleteEmployee(int empID){
+        if(employeeRepo.existsById(empID)){
+            employeeRepo.deleteById(empID);
+            return VarList.RSP_SUCCESS;
+        }else {
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 }
